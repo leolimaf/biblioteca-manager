@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LivrosAPI.Models;
+namespace LivrosAPI.Data.DTOs.Livro;
 
-public class Livro
+public class ReadLivroDTO
 {
     [Key]
     [Required]

@@ -1,4 +1,7 @@
-﻿using LivrosAPI.Models;
+﻿using FluentResults;
+using LivrosAPI.Data.DTOs.Livro;
+using LivrosAPI.Models;
+using LivrosAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LivrosAPI.Controllers;
@@ -7,31 +10,75 @@ namespace LivrosAPI.Controllers;
 [Route("[controller]")]
 public class LivroController : ControllerBase
 {
-    public static List<Livro?> Livros { get; set; } = new List<Livro?>();
-    private static int id = 1;
-    
-    [HttpPost]
-    public IActionResult AdicionarLivro([FromBody] Livro? livro)
+
+    private readonly ILivroService _livroService;
+
+    public LivroController(ILivroService livroService)
     {
-        livro.Id = id++;
-        Livros.Add(livro);
-        return CreatedAtAction(nameof(AdicionarLivro), new {Id = livro.Id}, livro);
+        _livroService = livroService;
     }
 
-    [HttpGet]
-    public IActionResult ListarLivros()
+    [HttpPost, Route("[action]")]
+    public IActionResult AdicionarLivro([FromBody] CreateLivroDTO livroDto)
     {
-        return Ok(Livros);
+        ReadLivroDTO readLivroDto = _livroService.AdicionarLivro(livroDto);
+        return CreatedAtAction(nameof(ObterLivroPorId), new {Id = readLivroDto.Id}, readLivroDto);
     }
     
-    [HttpGet("{id:int}")]
-    public IActionResult ObterLivroPorId(int id)
+    [HttpGet, Route("[action]")]
+    public IActionResult ListarLivros([FromQuery] List<string>? generos = null, string? autor = null, string? editora = null)
     {
-        var livro =  Livros.FirstOrDefault(l => l.Id == id);
-        if (livro != null)
-        {
-            Ok(livro);
-        }
-        return NotFound(livro);
+        List<ReadLivroDTO> readLivrosDto = _livroService.ListarLivros(generos, autor, editora);
+        if (readLivrosDto is null) 
+            return NotFound();
+        return Ok(readLivrosDto);
+    }
+    
+    // TODO: CONFERIR SE FICOU CERTO
+    [HttpGet, Route("[action]")]
+    public IActionResult ObterLivroPorId(long id)
+    {
+        ReadLivroDTO readLivroDto =  _livroService.ObterLivroPorId(id);
+        if (readLivroDto is null) 
+            return NotFound(readLivroDto);
+        return Ok(readLivroDto);
+        return NotFound();
+
+    }
+    
+    [HttpPut, Route("[action]")]
+    public IActionResult AtualizarLivro(long id, UpdateLivroDTO livroDto)
+    {
+        Result result = _livroService.AtualizarLivro(id, livroDto);
+        if (result.IsFailed)
+            return NotFound();
+        return NoContent();
+    }
+    
+    [HttpDelete, Route("[action]")]
+    public IActionResult RemoverLivroPorId(long id)
+    {
+        Result result = _livroService.RemoverLivroPorId(id);
+        if (result.IsFailed)
+            return NotFound();
+        return NoContent();
+    }
+    
+    [HttpDelete, Route("[action]")]
+    public IActionResult RemoverLivroPorISBN10(string isbn)
+    {
+        Result result = _livroService.RemoverLivroPorISBN10(isbn);
+        if (result.IsFailed)
+            return NotFound();
+        return NoContent();
+    }    
+    
+    [HttpDelete, Route("[action]")]
+    public IActionResult RemoverLivroPorISBN13(string isbn)
+    {
+        Result result = _livroService.RemoverLivroPorISBN13(isbn);
+        if (result.IsFailed)
+            return NotFound();
+        return NoContent();
     }
 }

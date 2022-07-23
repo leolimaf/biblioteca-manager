@@ -1,13 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LivrosAPI.Models;
+namespace LivrosAPI.Data.DTOs.Livro;
 
-public class Livro
+public class CreateLivroDTO
 {
-    [Key]
-    [Required]
-    public int Id { get; set; }
-    
     [Required(ErrorMessage = "O atributo {0} é obrigatório.")]
     public string Titulo { get; set; }
     
