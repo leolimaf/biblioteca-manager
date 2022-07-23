@@ -26,7 +26,7 @@ public class LivroController : ControllerBase
     }
     
     [HttpGet, Route("[action]")]
-    public IActionResult ListarLivros([FromQuery] List<string>? generos = null, string? autor = null, string? editora = null)
+    public IActionResult ListarLivros([FromQuery] string? generos, string? autor, string? editora)
     {
         List<ReadLivroDTO> readLivrosDto = _livroService.ListarLivros(generos, autor, editora);
         if (readLivrosDto is null) 
@@ -34,7 +34,7 @@ public class LivroController : ControllerBase
         return Ok(readLivrosDto);
     }
     
-    // TODO: CONFERIR SE FICOU CERTO
+    // TODO: TA DANDO ERRO
     [HttpGet, Route("[action]")]
     public IActionResult ObterLivroPorId(long id)
     {
@@ -42,14 +42,48 @@ public class LivroController : ControllerBase
         if (readLivroDto is null) 
             return NotFound(readLivroDto);
         return Ok(readLivroDto);
-        return NotFound();
-
+    }
+    
+    [HttpGet, Route("[action]")]
+    public IActionResult ObterLivroPorIsbn10(string isbn10)
+    {
+        ReadLivroDTO readLivroDto =  _livroService.ObterLivroPorIsbn10(isbn10);
+        if (readLivroDto is null) 
+            return NotFound(readLivroDto);
+        return Ok(readLivroDto);
+    }
+    
+    [HttpGet, Route("[action]")]
+    public IActionResult ObterLivroPorIsbn13(string isbn13)
+    {
+        ReadLivroDTO readLivroDto =  _livroService.ObterLivroPorIsbn13(isbn13);
+        if (readLivroDto is null) 
+            return NotFound(readLivroDto);
+        return Ok(readLivroDto);
     }
     
     [HttpPut, Route("[action]")]
-    public IActionResult AtualizarLivro(long id, UpdateLivroDTO livroDto)
+    public IActionResult AtualizarLivroPorId(long id, UpdateLivroDTO livroDto)
     {
-        Result result = _livroService.AtualizarLivro(id, livroDto);
+        Result result = _livroService.AtualizarLivroPorId(id, livroDto);
+        if (result.IsFailed)
+            return NotFound();
+        return NoContent();
+    }
+    
+    [HttpPut, Route("[action]")]
+    public IActionResult AtualizarLivroPorIsbn10(string isbn10, UpdateLivroDTO livroDto)
+    {
+        Result result = _livroService.AtualizarLivroPorIsbn10(isbn10, livroDto);
+        if (result.IsFailed)
+            return NotFound();
+        return NoContent();
+    }
+    
+    [HttpPut, Route("[action]")]
+    public IActionResult AtualizarLivroPorIsbn13(string isbn13, UpdateLivroDTO livroDto)
+    {
+        Result result = _livroService.AtualizarLivroPorIsbn13(isbn13, livroDto);
         if (result.IsFailed)
             return NotFound();
         return NoContent();
@@ -65,18 +99,18 @@ public class LivroController : ControllerBase
     }
     
     [HttpDelete, Route("[action]")]
-    public IActionResult RemoverLivroPorISBN10(string isbn)
+    public IActionResult RemoverLivroPorIsbn10(string isbn)
     {
-        Result result = _livroService.RemoverLivroPorISBN10(isbn);
+        Result result = _livroService.RemoverLivroPorIsbn10(isbn);
         if (result.IsFailed)
             return NotFound();
         return NoContent();
     }    
     
     [HttpDelete, Route("[action]")]
-    public IActionResult RemoverLivroPorISBN13(string isbn)
+    public IActionResult RemoverLivroPorIsbn13(string isbn)
     {
-        Result result = _livroService.RemoverLivroPorISBN13(isbn);
+        Result result = _livroService.RemoverLivroPorIsbn13(isbn);
         if (result.IsFailed)
             return NotFound();
         return NoContent();

@@ -36,11 +36,21 @@ public class LivroService : ILivroService
         }
         return null;
     }
-    
-    public List<ReadLivroDTO> ListarLivros(List<string>? generos, string? autor, string? editora)
+
+    public ReadLivroDTO ObterLivroPorIsbn10(string isbn10)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ReadLivroDTO ObterLivroPorIsbn13(string isbn13)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<ReadLivroDTO> ListarLivros(string? generos, string? autor, string? editora)
     {
         List<Livro> livros = new List<Livro>();
-        if ((generos is not null && generos.Count > 0) || !string.IsNullOrWhiteSpace(autor) || !string.IsNullOrWhiteSpace(autor))
+        if ( !string.IsNullOrWhiteSpace(generos) || !string.IsNullOrWhiteSpace(autor) || !string.IsNullOrWhiteSpace(autor))
         {
             // TODO MELHORAR ESSA LÓGICA
             // if (generos is not null && generos.Count > 0)
@@ -63,49 +73,59 @@ public class LivroService : ILivroService
         return null;
     }
     
-    public Result AtualizarLivro(long id, UpdateLivroDTO livroDTO)
+    public Result AtualizarLivroPorId(long id, UpdateLivroDTO livroDTO)
     {
         Livro livro = _context.Livros.FirstOrDefault(l => l.Id == id);
+        
         if (livro is null)
-        {
-            return Result.Fail("Livro não encontrado");
-        }
+            return Result.Fail($"O livro com o id {id} não foi encontrado");
+        
         _mapper.Map(livroDTO, livro);
         _context.SaveChanges();
         return Result.Ok();
     }
-    
+
+    public Result AtualizarLivroPorIsbn10(string isbn10, UpdateLivroDTO livro)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Result AtualizarLivroPorIsbn13(string isbn13, UpdateLivroDTO livro)
+    {
+        throw new NotImplementedException();
+    }
+
     public Result RemoverLivroPorId(long id)
     {
         Livro livro = _context.Livros.FirstOrDefault(l => l.Id == id);
+        
         if (livro is null)
-        {
-            return Result.Fail("Livro não encontrado");
-        }
+            return Result.Fail($"O livro com o id {id} não foi encontrado");
+        
         _context.Remove(livro);
         _context.SaveChanges();
         return Result.Ok();
     }
     
-    public Result RemoverLivroPorISBN10(string isbn)
+    public Result RemoverLivroPorIsbn10(string isbn)
     {
         Livro livro = _context.Livros.FirstOrDefault(l => l.ISBN10 == isbn);
+        
         if (livro is null)
-        {
-            return Result.Fail("Livro não encontrado");
-        }
+            return Result.Fail($"O livro com o ISBN-10 {isbn} não foi encontrado");
+        
         _context.Remove(livro);
         _context.SaveChanges();
         return Result.Ok();
     }
     
-    public Result RemoverLivroPorISBN13(string isbn)
+    public Result RemoverLivroPorIsbn13(string isbn)
     {
         Livro livro = _context.Livros.FirstOrDefault(l => l.ISBN13 == isbn);
+        
         if (livro is null)
-        {
-            return Result.Fail("Livro não encontrado");
-        }
+            return Result.Fail($"O livro com o ISBN-10 {isbn} não foi encontrado");
+        
         _context.Remove(livro);
         _context.SaveChanges();
         return Result.Ok();

@@ -20,7 +20,7 @@ public class CreateLivroDTO
     
     public int Volume { get; set; }
     
-    public List<string> Generos { get; set; }
+    public string Generos { get; set; }
     
     public int QuantidadeDePaginas { get; set; }
     
