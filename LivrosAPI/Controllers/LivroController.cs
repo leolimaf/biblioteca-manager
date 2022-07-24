@@ -21,6 +21,9 @@ public class LivroController : ControllerBase
     }
 
     [HttpPost, Route("[action]")]
+    [ProducesResponseType(201, Type = typeof(LerLivroDTO))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
     public IActionResult AdicionarLivro([FromBody] AdicionarLivroDTO livroDto)
     {
         LerLivroDTO lerLivroDto = _livroService.AdicionarLivro(livroDto);
@@ -28,6 +31,10 @@ public class LivroController : ControllerBase
     }
     
     [HttpGet, Route("[action]")]
+    [ProducesResponseType(200, Type = typeof(List<LerLivroDTO>))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult ListarLivros([FromQuery] string? generos, string? autor, string? editora)
     {
         List<LerLivroDTO> readLivrosDto = _livroService.ListarLivros(generos, autor, editora);
@@ -37,6 +44,10 @@ public class LivroController : ControllerBase
     }
     
     [HttpGet, Route("[action]")]
+    [ProducesResponseType(200, Type = typeof(LerLivroDTO))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult ObterLivroPorId(long id)
     {
         LerLivroDTO lerLivroDto =  _livroService.ObterLivroPorId(id);
@@ -46,6 +57,10 @@ public class LivroController : ControllerBase
     }
     
     [HttpGet, Route("[action]")]
+    [ProducesResponseType(200, Type = typeof(LerLivroDTO))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult ObterLivroPorIsbn10(string isbn10)
     {
         LerLivroDTO lerLivroDto =  _livroService.ObterLivroPorIsbn10(isbn10);
@@ -55,6 +70,10 @@ public class LivroController : ControllerBase
     }
     
     [HttpGet, Route("[action]")]
+    [ProducesResponseType(200, Type = typeof(LerLivroDTO))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public IActionResult ObterLivroPorIsbn13(string isbn13)
     {
         LerLivroDTO lerLivroDto =  _livroService.ObterLivroPorIsbn13(isbn13);
@@ -64,6 +83,9 @@ public class LivroController : ControllerBase
     }
     
     [HttpPut, Route("[action]")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
     public IActionResult AtualizarLivroPorId(long id, AtualizarLivroDTO livroDto)
     {
         Result result = _livroService.AtualizarLivroPorId(id, livroDto);
@@ -73,6 +95,9 @@ public class LivroController : ControllerBase
     }
     
     [HttpPut, Route("[action]")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
     public IActionResult AtualizarLivroPorIsbn10(string isbn10, AtualizarLivroDTO livroDto)
     {
         Result result = _livroService.AtualizarLivroPorIsbn10(isbn10, livroDto);
@@ -82,6 +107,9 @@ public class LivroController : ControllerBase
     }
     
     [HttpPut, Route("[action]")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
     public IActionResult AtualizarLivroPorIsbn13(string isbn13, AtualizarLivroDTO livroDto)
     {
         Result result = _livroService.AtualizarLivroPorIsbn13(isbn13, livroDto);
@@ -91,6 +119,9 @@ public class LivroController : ControllerBase
     }
     
     [HttpDelete, Route("[action]")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
     public IActionResult RemoverLivroPorId(long id)
     {
         Result result = _livroService.RemoverLivroPorId(id);
@@ -100,6 +131,9 @@ public class LivroController : ControllerBase
     }
     
     [HttpDelete, Route("[action]")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
     public IActionResult RemoverLivroPorIsbn10(string isbn)
     {
         Result result = _livroService.RemoverLivroPorIsbn10(isbn);
@@ -109,6 +143,9 @@ public class LivroController : ControllerBase
     }    
     
     [HttpDelete, Route("[action]")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
     public IActionResult RemoverLivroPorIsbn13(string isbn)
     {
         Result result = _livroService.RemoverLivroPorIsbn13(isbn);

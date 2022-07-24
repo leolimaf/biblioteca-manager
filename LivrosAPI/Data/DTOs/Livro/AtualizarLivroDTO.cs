@@ -1,19 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace LivrosAPI.Data.DTOs.Livro;
 
 public class AtualizarLivroDTO
 {
-    [Required(ErrorMessage = "O atributo {0} é obrigatório.")]
+    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     public string Titulo { get; set; }
     
     public string Subtitulo { get; set; }
     
-    [StringLength(10, MinimumLength = 10, ErrorMessage = "O atributo {0} só pode ter {2} caracteres.")]
+    [JsonPropertyName("isbn-10")]
+    [StringLength(10, MinimumLength = 10, ErrorMessage = "O campo {0} só pode ter {2} caracteres.")]
     public string Isbn10 { get; set; }
     
-    [Required(ErrorMessage = "O atributo {0} é obrigatório.")]
-    [StringLength(13, MinimumLength = 13, ErrorMessage = "O atributo {0} só pode ter {2} caracteres.")]
+    [JsonPropertyName("isbn-13")]
+    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+    [StringLength(13, MinimumLength = 13, ErrorMessage = "O campo {0} só pode ter {2} caracteres.")]
     public string Isbn13 { get; set; }
     
     public string Serie { get; set; }
@@ -24,7 +27,7 @@ public class AtualizarLivroDTO
     
     public int QuantidadeDePaginas { get; set; }
     
-    [Required(ErrorMessage = "O atributo {0} é obrigatório.")]
+    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     public string Autor { get; set; }
     
     public string Editora { get; set; }
