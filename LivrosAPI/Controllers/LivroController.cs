@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace LivrosAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[ApiVersion("1.0")]
+[Route("v{version:apiVersion}/[controller]")]
+[Produces("application/json")]
 public class LivroController : ControllerBase
 {
 
@@ -34,7 +36,6 @@ public class LivroController : ControllerBase
         return Ok(readLivrosDto);
     }
     
-    // TODO: TA DANDO ERRO
     [HttpGet, Route("[action]")]
     public IActionResult ObterLivroPorId(long id)
     {
