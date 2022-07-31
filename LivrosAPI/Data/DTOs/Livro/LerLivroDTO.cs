@@ -4,7 +4,7 @@ namespace LivrosAPI.Data.DTOs.Livro;
 
 public class LerLivroDTO
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     
     public string Titulo { get; set; }
     

@@ -11,7 +11,7 @@ public class Livro
     [Required]
     [JsonPropertyName("id")]
     [Column("id")]
-    public int Id { get; set; }
+    public long Id { get; set; }
     
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     [Column("titulo")]

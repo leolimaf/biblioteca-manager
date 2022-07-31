@@ -1,15 +1,49 @@
-using LivrosAPI.Data;
+using System.Text;
+using LivrosAPI.Configurations;using LivrosAPI.Data;
 using LivrosAPI.Services;
 using LivrosAPI.Services.Implementations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var tokenConfigurations = new TokenConfiguration();
+new ConfigureFromConfigurationOptions<TokenConfiguration>(builder.Configuration.GetSection("TokenConfigurations")).Configure(tokenConfigurations);
+builder.Services.AddSingleton(tokenConfigurations);
+
+builder.Services.AddAuthentication(opts =>
+{
+    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(opts =>
+{
+    opts.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = tokenConfigurations.Issuer,
+        ValidAudience = tokenConfigurations.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
+    };
+});
+
+builder.Services.AddAuthorization(auth =>
+{
+    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build());
+});
 
 builder.Services.AddCors();
 builder.Services.AddDbContext<AppDbContext>(opts =>
@@ -36,6 +70,9 @@ builder.Services.AddVersionedApiExplorer(opts =>
     opts.SubstituteApiVersionInUrl = true;
 });
 builder.Services.AddScoped<ILivroService, LivroService>();
+builder.Services.AddScoped<IAutenticacaoService, AutenticacaoService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+// builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
