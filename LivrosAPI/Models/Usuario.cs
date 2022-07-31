@@ -21,14 +21,16 @@ public class Usuario
     
     [Column("nome_completo")]
     public string NomeCompleto { get; set; }
+    
+    [Column("cpf")]
     public string Cpf { get; set; }
 
     [Column("email")]
     public string Email { get; set; }
     
     [Column("token")]
-    public string Token { get; set; }
+    public string? Token { get; set; }
     
     [Column("validade_token")]
-    public DateTime ValidadeToken { get; set; }
+    public DateTime? ValidadeToken { get; set; }
 }

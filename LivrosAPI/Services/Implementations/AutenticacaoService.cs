@@ -29,7 +29,7 @@ public class AutenticacaoService : IAutenticacaoService
     public Token AutenticarUsuario(LoginRequest credenciais)
     {
         var senha = ComputeHash(credenciais.Senha, new SHA256CryptoServiceProvider());
-        var usuario =  _context.Usuarios.FirstOrDefault(u => u.Matricula == credenciais.Matricula && u.Senha == credenciais.Senha);
+        var usuario =  _context.Usuarios.FirstOrDefault(u => u.Matricula == credenciais.Matricula && u.Senha == senha);
         
         if (usuario is null)
             return null;
@@ -45,11 +45,10 @@ public class AutenticacaoService : IAutenticacaoService
         usuario.Token = refreshToken;
         usuario.ValidadeToken = DateTime.Now.AddDays(_configuration.DaysToExpiry);
         
-        Usuario user = _context.Usuarios.FirstOrDefault(u => u.Matricula == usuario.Matricula);
+        var user = _context.Usuarios.FirstOrDefault(u => u.Matricula == usuario.Matricula);
         
         if (user is null)
             return null;
-        // _mapper.Map(user, usuario); TODO: AJUSTAR
         _context.SaveChanges();
 
         DateTime dataCriacao = DateTime.Now;
@@ -64,6 +63,54 @@ public class AutenticacaoService : IAutenticacaoService
             );
     }
     
+    public Token AutenticarUsuario(TokenValue tokenValue)
+    {
+        var accessToken = tokenValue.AccessToken;
+        var refreshToken = tokenValue.RefreshToken;
+
+        var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
+        var matricula = principal.Identity.Name;
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.Matricula == matricula);
+
+        if (usuario is null || usuario.Token != refreshToken || usuario.ValidadeToken <= DateTime.Now)
+            return null;
+
+        accessToken = _tokenService.GenerateAccessToken(principal.Claims);
+        refreshToken = _tokenService.GenerateRefreshToken();
+
+        usuario.Token = refreshToken;
+        
+        var user = _context.Usuarios.FirstOrDefault(u => u.Matricula == usuario.Matricula);
+        
+        if (user is null)
+            return null;
+        _context.SaveChanges();
+
+        DateTime dataCriacao = DateTime.Now;
+        DateTime dataExpiracao = dataCriacao.AddMinutes(_configuration.Minutes);
+        
+        return new Token(
+            true, 
+            dataCriacao.ToString(DATE_FORMAT), 
+            dataExpiracao.ToString(DATE_FORMAT),
+            accessToken,
+            refreshToken
+        );
+    }
+
+    public bool RevokeToken(string matricula)
+    {
+        var usuario = _context.Usuarios.FirstOrDefault(u => (u.Matricula == matricula));
+        
+        if (usuario is null)
+            return false;
+        
+        usuario.Token = null;
+        _context.SaveChanges();
+        
+        return true;
+    }
+
     private string ComputeHash(string input, SHA256CryptoServiceProvider algorithm)
     {
         byte[] inputBytes = Encoding.UTF8.GetBytes(input);
