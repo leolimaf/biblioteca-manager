@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using LivrosAPI.Configurations;using LivrosAPI.Data;
 using LivrosAPI.Services;
@@ -75,19 +76,22 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 // builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(opts =>
 {
-    c.SwaggerDoc("v1",new OpenApiInfo
+    opts.SwaggerDoc("v1",new OpenApiInfo
     {
-        Title = "Gerenciamento de Livros - Web API",
+        Title = "Biblioteca Virtual - Web API",
         Version = "v1",
-        Description = "API RESTful para realizar o gerenciamento de bibliotecas e livrarias.",
+        Description = "API RESTful desenvolvida para realizar o gerenciamento de bibliotecas.",
         Contact = new OpenApiContact
         {
             Name = "Leonardo Lima",
             Url = new Uri("https://github.com/leolimaf/LivrosAPI")
         }
     });
+    // using System.Reflection;
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 var app = builder.Build();
@@ -96,7 +100,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(opts => opts.DocumentTitle = "Controle de Livros - API");
+    app.UseSwaggerUI(opts => opts.DocumentTitle = "Biblioteca Virtual - Web API");
 }
 
 app.UseHttpsRedirection();
@@ -111,7 +115,7 @@ app.UseSwagger();
 
 app.UseSwaggerUI(opts =>
 {
-    opts.SwaggerEndpoint("/swagger/v1/swagger.json", "Controle de Livros - API");
+    opts.SwaggerEndpoint("/swagger/v1/swagger.json", "Biblioteca Virtual - Web API");
 });
 
 var option = new RewriteOptions();

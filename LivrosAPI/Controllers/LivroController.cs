@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using LivrosAPI.Data.DTOs.Livro;
-using LivrosAPI.Models;
 using LivrosAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +21,19 @@ public class LivroController : ControllerBase
         _livroService = livroService;
     }
 
+    /// <remarks>
+    ///	O endpoint adiciona um novo livro (schema AdicionarLivroDTO) na base de dados.
+    ///	
+    ///      Parâmetros obrigatórios:                      
+    ///      titulo, isbn-13 e autor.
+    /// 
+    ///      O parâmetro isbn-10 deve ter exatamente 10 caracteres.
+    ///      O parâmetro isbn-13 deve ter exatamente 13 caracteres.
+    ///     
+    /// </remarks>
+    /// <response code="201">Retorna o livro que foi adicionado (schema LerLivroDTO).</response>
+    /// <response code="400">Se o payload informado não estiver conforme a especificação.</response>
+    /// <response code="401">Caso o cliente não possua um token válido para realizar a requisição.</response>
     [HttpPost, Route("[action]")]
     [ProducesResponseType(201, Type = typeof(LerLivroDTO))]
     [ProducesResponseType(400)]
