@@ -36,14 +36,27 @@ public class LivroService : ILivroService
         return null;
     }
 
-    public LerLivroDTO ObterLivroPorIsbn10(string isbn10)
+    public LerLivroDTO ObterLivroPorIsbn13(string isbn13)
     {
         throw new NotImplementedException();
     }
 
-    public LerLivroDTO ObterLivroPorIsbn13(string isbn13)
+    public List<LerLivroDTO> ObterLivroPorTitulo(string titulo, string subtitulo)
     {
-        throw new NotImplementedException();
+        List<Livro> livros;
+        if (!string.IsNullOrWhiteSpace(titulo) && !string.IsNullOrWhiteSpace(subtitulo))
+            livros = _context.Livros
+                .Where(l => l.Titulo.Contains(titulo) && l.Subtitulo.Contains(subtitulo))
+                .ToList();
+        else if (!string.IsNullOrWhiteSpace(titulo) && string.IsNullOrWhiteSpace(subtitulo))
+            livros = _context.Livros.Where(l => l.Titulo.Contains(titulo)).ToList();
+        else if (string.IsNullOrWhiteSpace(titulo) && !string.IsNullOrWhiteSpace(subtitulo))
+            livros = _context.Livros.Where(l => l.Subtitulo.Contains(subtitulo)).ToList();
+        else
+            livros = null;
+        
+        List<LerLivroDTO> readLivrosDto = _mapper.Map<List<LerLivroDTO>>(livros);
+        return readLivrosDto;
     }
 
     public List<LerLivroDTO> ListarLivros(string? generos, string? autor, string? editora)
@@ -84,11 +97,6 @@ public class LivroService : ILivroService
         return Result.Ok();
     }
 
-    public Result AtualizarLivroPorIsbn10(string isbn10, AtualizarLivroDTO livro)
-    {
-        throw new NotImplementedException();
-    }
-
     public Result AtualizarLivroPorIsbn13(string isbn13, AtualizarLivroDTO livro)
     {
         throw new NotImplementedException();
@@ -106,24 +114,12 @@ public class LivroService : ILivroService
         return Result.Ok();
     }
     
-    public Result RemoverLivroPorIsbn10(string isbn10)
-    {
-        Livro livro = _context.Livros.FirstOrDefault(l => l.Isbn10 == isbn10);
-        
-        if (livro is null)
-            return Result.Fail($"O livro com o ISBN-10 {isbn10} não foi encontrado");
-        
-        _context.Remove(livro);
-        _context.SaveChanges();
-        return Result.Ok();
-    }
-    
     public Result RemoverLivroPorIsbn13(string isbn13)
     {
-        Livro livro = _context.Livros.FirstOrDefault(l => l.Isbn13 == isbn13);
+        Livro livro = _context.Livros.FirstOrDefault(l => l.Isbn == isbn13);
         
         if (livro is null)
-            return Result.Fail($"O livro com o ISBN-10 {isbn13} não foi encontrado");
+            return Result.Fail($"O livro com o ISBN-13 {isbn13} não foi encontrado");
         
         _context.Remove(livro);
         _context.SaveChanges();

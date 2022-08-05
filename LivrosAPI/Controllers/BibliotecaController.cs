@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using LivrosAPI.Data.DTOs.Livro;
+using LivrosAPI.Data.DTOs.Usuario;
 using LivrosAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,18 @@ namespace LivrosAPI.Controllers;
 [ApiController]
 [Authorize("Bearer")]
 [ApiVersion("1.0")]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("v{version:apiVersion}/biblioteca")]
 [Produces("application/json")]
-public class LivroController : ControllerBase
+public class BibliotecaController : ControllerBase
 {
 
     private readonly ILivroService _livroService;
+    private readonly IUsuarioService _usuarioService;
 
-    public LivroController(ILivroService livroService)
+    public BibliotecaController(ILivroService livroService, IUsuarioService usuarioService)
     {
         _livroService = livroService;
+        _usuarioService = usuarioService;
     }
 
     /// <remarks>
@@ -34,7 +37,7 @@ public class LivroController : ControllerBase
     /// <response code="201">Retorna o livro que foi adicionado (schema LerLivroDTO).</response>
     /// <response code="400">Se o payload informado não estiver conforme a especificação.</response>
     /// <response code="401">Caso o cliente não possua um token válido para realizar a requisição.</response>
-    [HttpPost, Route("[action]")]
+    [HttpPost, Route("livro/adicionar-livro")]
     [ProducesResponseType(201, Type = typeof(LerLivroDTO))]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -44,7 +47,7 @@ public class LivroController : ControllerBase
         return CreatedAtAction(nameof(ObterLivroPorId), new {Id = lerLivroDto.Id}, lerLivroDto);
     }
     
-    [HttpGet, Route("[action]")]
+    [HttpGet, Route("livro/listar-livros")]
     [ProducesResponseType(200, Type = typeof(List<LerLivroDTO>))]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -57,7 +60,7 @@ public class LivroController : ControllerBase
         return Ok(readLivrosDto);
     }
     
-    [HttpGet, Route("[action]")]
+    [HttpGet, Route("livro/obter-livro-por-id")]
     [ProducesResponseType(200, Type = typeof(LerLivroDTO))]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -70,20 +73,7 @@ public class LivroController : ControllerBase
         return Ok(lerLivroDto);
     }
     
-    [HttpGet, Route("[action]")]
-    [ProducesResponseType(200, Type = typeof(LerLivroDTO))]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(404)]
-    public IActionResult ObterLivroPorIsbn10(string isbn10)
-    {
-        LerLivroDTO lerLivroDto =  _livroService.ObterLivroPorIsbn10(isbn10);
-        if (lerLivroDto is null) 
-            return NotFound(lerLivroDto);
-        return Ok(lerLivroDto);
-    }
-    
-    [HttpGet, Route("[action]")]
+    [HttpGet, Route("livro/obter-livro-por-isbn-13")]
     [ProducesResponseType(200, Type = typeof(LerLivroDTO))]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -95,8 +85,21 @@ public class LivroController : ControllerBase
             return NotFound(lerLivroDto);
         return Ok(lerLivroDto);
     }
+
+    [HttpGet, Route("livro/obter-livro-por-titulo")]
+    [ProducesResponseType(200, Type = typeof(LerLivroDTO))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public IActionResult ObterLivroPorTitulo([FromQuery] string titulo, [FromQuery] string subTitulo)
+    {
+        List<LerLivroDTO> lerLivroDto =  _livroService.ObterLivroPorTitulo(titulo, subTitulo);
+        if (lerLivroDto is null) 
+            return NotFound(lerLivroDto);
+        return Ok(lerLivroDto);
+    }
     
-    [HttpPut, Route("[action]")]
+    [HttpPut, Route("livro/atualizar-livro-por-id")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -108,19 +111,7 @@ public class LivroController : ControllerBase
         return NoContent();
     }
     
-    [HttpPut, Route("[action]")]
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(401)]
-    public IActionResult AtualizarLivroPorIsbn10(string isbn10, AtualizarLivroDTO livroDto)
-    {
-        Result result = _livroService.AtualizarLivroPorIsbn10(isbn10, livroDto);
-        if (result.IsFailed)
-            return NotFound();
-        return NoContent();
-    }
-    
-    [HttpPut, Route("[action]")]
+    [HttpPut, Route("livro/atualizar-livro-por-isbn-13")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -132,7 +123,7 @@ public class LivroController : ControllerBase
         return NoContent();
     }
     
-    [HttpDelete, Route("[action]")]
+    [HttpDelete, Route("livro/remover-livro-por-id")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -144,19 +135,7 @@ public class LivroController : ControllerBase
         return NoContent();
     }
     
-    [HttpDelete, Route("[action]")]
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(401)]
-    public IActionResult RemoverLivroPorIsbn10(string isbn)
-    {
-        Result result = _livroService.RemoverLivroPorIsbn10(isbn);
-        if (result.IsFailed)
-            return NotFound();
-        return NoContent();
-    }    
-    
-    [HttpDelete, Route("[action]")]
+    [HttpDelete, Route("livro/remover-livro-por-isbn-13")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -166,5 +145,54 @@ public class LivroController : ControllerBase
         if (result.IsFailed)
             return NotFound();
         return NoContent();
+    }
+    
+    /// <remarks>
+    ///	O endpoint adiciona um novo usuario (schema AdicionarUsuarioDTO) na base de dados.
+    ///	
+    ///      Todos os parâmetros são obrigatórios.
+    /// 
+    ///      O parâmetro matricula deve ter no mínimo 6 e no máximo 12 caracteres.
+    ///      O parâmetro senha deve ter no mínimo 8 e no máximo 25 caracteres.
+    ///      O parâmetro cpf deve ter exatamente 11 caracteres numéricos.
+    ///     
+    /// </remarks>
+    /// <response code="201">Retorna o usuario que foi cadastrado (schema LerUsuarioDTO).</response>
+    /// <response code="400">Se o payload informado não estiver conforme a especificação.</response>
+    /// <response code="401">Caso o cliente não possua um token válido para realizar a requisição.</response>
+    [HttpPost, Route("usuario/adicionar-usuario")]
+    [ProducesResponseType(201, Type = typeof(LerUsuarioDTO))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    public IActionResult CadastrarUsuario([FromBody] AdicionarUsuarioDTO usuarioDto)
+    {
+        LerUsuarioDTO lerUsuarioDto = _usuarioService.CadastrarUsuario(usuarioDto);
+        return CreatedAtAction(nameof(ObterUsuarioPorId), new {Id = lerUsuarioDto.Id}, lerUsuarioDto);
+    }
+    
+    [HttpGet, Route("usuario/listar-usuarios")]
+    [ProducesResponseType(200, Type = typeof(List<LerUsuarioDTO>))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public IActionResult ListarUsuarios()
+    {
+        List<LerUsuarioDTO> readUsuariosDto = _usuarioService.ListarUsuarios();
+        if (readUsuariosDto is null) 
+            return NotFound();
+        return Ok(readUsuariosDto);
+    }
+    
+    [HttpGet, Route("usuario/obter-usuario-por-id")]
+    [ProducesResponseType(200, Type = typeof(LerUsuarioDTO))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public IActionResult ObterUsuarioPorId(long id)
+    {
+        LerUsuarioDTO lerUsuarioDto =  _usuarioService.ObterUsuarioPorId(id);
+        if (lerUsuarioDto is null) 
+            return NotFound(lerUsuarioDto);
+        return Ok(lerUsuarioDto);
     }
 }

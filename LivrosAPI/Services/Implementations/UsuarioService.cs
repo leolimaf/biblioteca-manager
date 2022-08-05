@@ -1,46 +1,21 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using AutoMapper;
-using FluentResults;
-using LivrosAPI.Data;
-using LivrosAPI.Data.Requests;
-using LivrosAPI.Models;
+﻿using LivrosAPI.Data.DTOs.Usuario;
 
 namespace LivrosAPI.Services.Implementations;
 
 public class UsuarioService : IUsuarioService
 {
-    private AppDbContext _context;
-    private IMapper _mapper;
-
-    public UsuarioService(AppDbContext context, IMapper mapper)
+    public LerUsuarioDTO CadastrarUsuario(AdicionarUsuarioDTO livro)
     {
-        _context = context;
-        _mapper = mapper;
+        throw new NotImplementedException();
     }
 
-    public Usuario AutenticarUsuario(LoginRequest credenciais)
+    public List<LerUsuarioDTO> ListarUsuarios()
     {
-        var senha = ComputeHash(credenciais.Senha, new SHA256CryptoServiceProvider());
-        return _context.Usuarios.FirstOrDefault(u => u.Matricula == credenciais.Matricula && u.Senha == credenciais.Senha);
+        throw new NotImplementedException();
     }
 
-    public Usuario AtualizarDadosCadastrados(Usuario dadosDoUsuario)
+    public LerUsuarioDTO ObterUsuarioPorId(long id)
     {
-
-        Usuario usuario = _context.Usuarios.FirstOrDefault(u => u.Matricula == dadosDoUsuario.Matricula);
-        
-        if (usuario is null)
-            return null;
-        _mapper.Map(dadosDoUsuario, usuario);
-        _context.SaveChanges();
-        return usuario;
-    }
-
-    private string ComputeHash(string input, SHA256CryptoServiceProvider algorithm)
-    {
-        byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-        byte[] hashedBytes = algorithm.ComputeHash(inputBytes);
-        return BitConverter.ToString(hashedBytes);
+        throw new NotImplementedException();
     }
 }

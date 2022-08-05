@@ -36,7 +36,6 @@
       <Compile Remove="WeatherForecast.cs" />
       <Compile Remove="Controllers\WeatherForecastController.cs" />
       <Compile Remove="Services\IUsuarioServices.cs" />
-      <Compile Remove="Services\Implementations\UsuarioService.cs" />
       <Compile Remove="Data\Requests\TokenObj.cs" />
     </ItemGroup>
 

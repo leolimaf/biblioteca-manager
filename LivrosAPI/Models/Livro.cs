@@ -20,16 +20,11 @@ public class Livro
     [Column("subtitulo")]
     public string Subtitulo { get; set; }
     
-    [JsonPropertyName("isbn-10")]
-    [StringLength(10, MinimumLength = 10, ErrorMessage = "O campo {0} só pode ter {2} caracteres.")]
-    [Column("isbn10")]
-    public string Isbn10 { get; set; }
-    
     [JsonPropertyName("isbn-13")]
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     [StringLength(13, MinimumLength = 13, ErrorMessage = "O campo {0} só pode ter {2} caracteres.")]
-    [Column("isbn13")]
-    public string Isbn13 { get; set; }
+    [Column("isbn")]
+    public string Isbn { get; set; }
 
     [Column("serie")]
     public string Serie { get; set; }
@@ -37,16 +32,22 @@ public class Livro
     [Column("volume")]
     public int Volume { get; set; }
     
-    [Column("generos")]
-    public string Generos { get; set; }
+    [Column("ano_publicacao")]
+    public int AnoPublicacao { get; set; }
     
-    [Column("quantidade_de_paginas")]
-    public int QuantidadeDePaginas { get; set; }
+    [Column("numero_de_paginas")]
+    public int NumeroDePaginas { get; set; }
+
+    [Column("quantidade_dispovivel")]
+    public int QuantidadeDisponivel { get; set; }
     
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     [Column("autor")]
-    public string Autor { get; set; }
+    public List<Autor> Autores { get; set; }
     
     [Column("editora")]
-    public string Editora { get; set; }
+    public Editora Editora { get; set; }
+    
+    [Column("genero")]
+    public List<Genero> Generos { get; set; }
 }
