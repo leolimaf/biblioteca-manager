@@ -4,7 +4,7 @@ namespace LivrosAPI.Services.Implementations;
 
 public class UsuarioService : IUsuarioService
 {
-    public LerUsuarioDTO CadastrarUsuario(AdicionarUsuarioDTO livro)
+    public LerUsuarioDTO CadastrarUsuario(AdicionarUsuarioDTO usuarioDto)
     {
         throw new NotImplementedException();
     }

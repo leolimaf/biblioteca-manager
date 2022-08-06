@@ -1,18 +1,43 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using LivrosAPI.Models;
 
 namespace LivrosAPI.Data.DTOs.Livro;
 
 public class LerLivroDTO
 {
+    [Key]
+    [Required]
+    [JsonPropertyName("id")]
     public long Id { get; set; }
+    
+    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     public string Titulo { get; set; }
+    
     public string Subtitulo { get; set; }
-    public string Isbn10 { get; set; }
-    public string Isbn13 { get; set; }
+    
+    [JsonPropertyName("isbn-13")]
+    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+    [StringLength(13, MinimumLength = 13, ErrorMessage = "O campo {0} só pode ter {2} caracteres.")]
+    public string Isbn { get; set; }
+    
     public string Serie { get; set; }
+    
     public int Volume { get; set; }
-    public string Generos { get; set; }
-    public int QuantidadeDePaginas { get; set; }
-    public string Autor { get; set; }
-    public string Editora { get; set; }
+    
+    public int AnoPublicacao { get; set; }
+    
+    public string Idioma { get; set; }
+    
+    public int NumeroDePaginas { get; set; }
+    
+    public int QuantidadeDisponivel { get; set; }
+    
+    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+    public List<Autor> Autores { get; set; }
+    
+    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+    public Editora Editora { get; set; }
+    
+    public List<string> Generos { get; set; }
 }

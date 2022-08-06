@@ -35,6 +35,9 @@ public class Livro
     [Column("ano_publicacao")]
     public int AnoPublicacao { get; set; }
     
+    [Column("idioma")]
+    public string Idioma { get; set; }
+
     [Column("numero_de_paginas")]
     public int NumeroDePaginas { get; set; }
 
@@ -49,5 +52,5 @@ public class Livro
     public Editora Editora { get; set; }
     
     [Column("genero")]
-    public List<Genero> Generos { get; set; }
+    public List<string> Generos { get; set; }
 }

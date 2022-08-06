@@ -4,7 +4,7 @@ namespace LivrosAPI.Services;
 
 public interface IUsuarioService
 {
-    LerUsuarioDTO CadastrarUsuario(AdicionarUsuarioDTO livro);
+    LerUsuarioDTO CadastrarUsuario(AdicionarUsuarioDTO usuarioDto);
     List<LerUsuarioDTO> ListarUsuarios();
     LerUsuarioDTO ObterUsuarioPorId(long id);
 
