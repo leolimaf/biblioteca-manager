@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivrosAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220731195405_UsuarioCorrigidoCpf")]
-    partial class UsuarioCorrigidoCpf
+    [Migration("20220807194454_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,55 @@ namespace LivrosAPI.Migrations
                 .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("AutorLivro", b =>
+                {
+                    b.Property<long>("AutoresId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LivrosId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AutoresId", "LivrosId");
+
+                    b.HasIndex("LivrosId");
+
+                    b.ToTable("AutorLivro");
+                });
+
+            modelBuilder.Entity("LivrosAPI.Models.Autor", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<string>("NomeCompleto")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("nome_completo");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("autor");
+                });
+
+            modelBuilder.Entity("LivrosAPI.Models.Editora", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("editora");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("editora");
+                });
+
             modelBuilder.Entity("LivrosAPI.Models.Livro", b =>
                 {
                     b.Property<long>("Id")
@@ -28,36 +77,31 @@ namespace LivrosAPI.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
-                    b.Property<string>("Autor")
+                    b.Property<int>("AnoPublicacao")
+                        .HasColumnType("int")
+                        .HasColumnName("ano_publicacao");
+
+                    b.Property<long>("EditoraId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Idioma")
                         .IsRequired()
                         .HasColumnType("longtext")
-                        .HasColumnName("autor");
+                        .HasColumnName("idioma");
 
-                    b.Property<string>("Editora")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("editora");
-
-                    b.Property<string>("Generos")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("generos");
-
-                    b.Property<string>("Isbn10")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("isbn10");
-
-                    b.Property<string>("Isbn13")
+                    b.Property<string>("Isbn")
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("varchar(13)")
-                        .HasColumnName("isbn13");
+                        .HasColumnName("isbn");
 
-                    b.Property<int>("QuantidadeDePaginas")
+                    b.Property<int>("NumeroDePaginas")
                         .HasColumnType("int")
-                        .HasColumnName("quantidade_de_paginas");
+                        .HasColumnName("numero_de_paginas");
+
+                    b.Property<int>("QuantidadeDisponivel")
+                        .HasColumnType("int")
+                        .HasColumnName("quantidade_dispovivel");
 
                     b.Property<string>("Serie")
                         .IsRequired()
@@ -80,6 +124,8 @@ namespace LivrosAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EditoraId");
+
                     b.ToTable("livro");
                 });
 
@@ -92,7 +138,8 @@ namespace LivrosAPI.Migrations
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)")
                         .HasColumnName("cpf");
 
                     b.Property<string>("Email")
@@ -102,7 +149,8 @@ namespace LivrosAPI.Migrations
 
                     b.Property<string>("Matricula")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasMaxLength(6)
+                        .HasColumnType("varchar(6)")
                         .HasColumnName("matricula");
 
                     b.Property<string>("NomeCompleto")
@@ -126,6 +174,37 @@ namespace LivrosAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("usuario");
+                });
+
+            modelBuilder.Entity("AutorLivro", b =>
+                {
+                    b.HasOne("LivrosAPI.Models.Autor", null)
+                        .WithMany()
+                        .HasForeignKey("AutoresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LivrosAPI.Models.Livro", null)
+                        .WithMany()
+                        .HasForeignKey("LivrosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LivrosAPI.Models.Livro", b =>
+                {
+                    b.HasOne("LivrosAPI.Models.Editora", "Editora")
+                        .WithMany("Livros")
+                        .HasForeignKey("EditoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Editora");
+                });
+
+            modelBuilder.Entity("LivrosAPI.Models.Editora", b =>
+                {
+                    b.Navigation("Livros");
                 });
 #pragma warning restore 612, 618
         }

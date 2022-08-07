@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using LivrosAPI.Models;
+using LivrosAPI.Data.DTOs.Autor;
+using LivrosAPI.Data.DTOs.Editora;
 
 namespace LivrosAPI.Data.DTOs.Livro;
 
@@ -33,11 +34,7 @@ public class LerLivroDTO
     
     public int QuantidadeDisponivel { get; set; }
     
-    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-    public List<Autor> Autores { get; set; }
+    public List<LerAutorDTO> Autores { get; set; }
     
-    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-    public Editora Editora { get; set; }
-    
-    public List<string> Generos { get; set; }
+    public LerEditoraDTO Editora { get; set; }
 }

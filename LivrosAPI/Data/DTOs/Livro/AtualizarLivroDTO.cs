@@ -6,6 +6,11 @@ namespace LivrosAPI.Data.DTOs.Livro;
 
 public class AtualizarLivroDTO
 {
+    [Key]
+    [Required]
+    [JsonPropertyName("id")]
+    public long Id { get; set; }
+    
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     public string Titulo { get; set; }
     
@@ -28,11 +33,5 @@ public class AtualizarLivroDTO
     
     public int QuantidadeDisponivel { get; set; }
     
-    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-    public List<Autor> Autores { get; set; }
-    
-    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-    public Editora Editora { get; set; }
-    
-    public List<string> Generos { get; set; }
+    public long EditoraId { get; set; }
 }

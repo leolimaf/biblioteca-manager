@@ -19,7 +19,6 @@ public class Usuario
     public string Matricula { get; set; }
     
     [Required]
-    [StringLength(8, MinimumLength = 25, ErrorMessage = "O campo {0} só pode ter no mínimo {2} e no máximo {1} caracteres.")]
     [Column("senha")]
     public string Senha { get; set; }
     

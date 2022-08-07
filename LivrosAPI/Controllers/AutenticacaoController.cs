@@ -58,7 +58,7 @@ public class AutenticacaoController : ControllerBase
         var result = _autenticacaoService.RevokeToken(matricula);
 
         if (!result)
-            return BadRequest("Ivalid client request");
+            return BadRequest("Invalid client request");
         
         return NoContent();
     }

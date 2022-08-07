@@ -30,7 +30,6 @@ public class BibliotecaController : ControllerBase
     ///      Parâmetros obrigatórios:                      
     ///      titulo, isbn-13 e autor.
     /// 
-    ///      O parâmetro isbn-10 deve ter exatamente 10 caracteres.
     ///      O parâmetro isbn-13 deve ter exatamente 13 caracteres.
     ///     
     /// </remarks>
@@ -52,9 +51,9 @@ public class BibliotecaController : ControllerBase
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
     [ProducesResponseType(404)]
-    public IActionResult ListarLivros([FromQuery] string? generos, string? autor, string? editora)
+    public IActionResult ListarLivros()
     {
-        List<LerLivroDTO> readLivrosDto = _livroService.ListarLivros(generos, autor, editora);
+        List<LerLivroDTO> readLivrosDto = _livroService.ListarLivros();
         if (readLivrosDto is null) 
             return NotFound();
         return Ok(readLivrosDto);
@@ -153,7 +152,6 @@ public class BibliotecaController : ControllerBase
     ///      Todos os parâmetros são obrigatórios.
     /// 
     ///      O parâmetro matricula deve ter no mínimo 6 e no máximo 12 caracteres.
-    ///      O parâmetro senha deve ter no mínimo 8 e no máximo 25 caracteres.
     ///      O parâmetro cpf deve ter exatamente 11 caracteres numéricos.
     ///     
     /// </remarks>

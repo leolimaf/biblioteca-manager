@@ -43,14 +43,13 @@ public class Livro
 
     [Column("quantidade_dispovivel")]
     public int QuantidadeDisponivel { get; set; }
-    
-    [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-    [Column("autor")]
-    public List<Autor> Autores { get; set; }
-    
-    [Column("editora")]
-    public Editora Editora { get; set; }
-    
-    [Column("genero")]
-    public List<string> Generos { get; set; }
+
+    [JsonIgnore]
+    public virtual List<Autor> Autores { get; set; }
+
+    [JsonIgnore]
+    public virtual Editora Editora { get; set; }
+
+    [Column("editora_id")]
+    public long EditoraId { get; set; }
 }

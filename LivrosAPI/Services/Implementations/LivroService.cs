@@ -59,30 +59,10 @@ public class LivroService : ILivroService
         return readLivrosDto;
     }
 
-    public List<LerLivroDTO> ListarLivros(string? generos, string? autor, string? editora)
+    public List<LerLivroDTO> ListarLivros()
     {
-        List<Livro> livros = new List<Livro>();
-        if ( !string.IsNullOrWhiteSpace(generos) || !string.IsNullOrWhiteSpace(autor) || !string.IsNullOrWhiteSpace(autor))
-        {
-            // TODO MELHORAR ESSA LÓGICA
-            // if (generos is not null && generos.Count > 0)
-            //     livros = livros.Concat(_context.Livros.Where()).ToList();
-            // if (!string.IsNullOrWhiteSpace(autor))
-            //     livros = livros.Concat(_context.Livros.Where(l => l.Autor.Equals(autor))).ToList();
-            // if (!string.IsNullOrWhiteSpace(editora))
-            //     livros = livros.Concat(_context.Livros.Where(l => l.Autor.Equals(autor))).ToList();
-        }
-        else
-        {
-            livros = _context.Livros.ToList();
-        }
-    
-        if (livros.Count > 0)
-        {
-            List<LerLivroDTO> readLivrosDto = _mapper.Map<List<LerLivroDTO>>(livros);
-            return readLivrosDto;
-        }
-        return null;
+        List<Livro> livros = _context.Livros.ToList();
+        return _mapper.Map<List<LerLivroDTO>>(livros);
     }
     
     public Result AtualizarLivroPorId(long id, AtualizarLivroDTO livroDTO)

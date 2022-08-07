@@ -37,28 +37,10 @@
       <Compile Remove="Controllers\WeatherForecastController.cs" />
       <Compile Remove="Services\IUsuarioServices.cs" />
       <Compile Remove="Data\Requests\TokenObj.cs" />
-      <Compile Remove="Models\Genero.cs" />
-      <Compile Remove="Data\DTOs\Autor\**" />
-      <Compile Remove="Data\DTOs\Editora\**" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Migrations" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="Data\DTOs\Autor\**" />
-      <EmbeddedResource Remove="Data\DTOs\Editora\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Data\DTOs\Autor\**" />
-      <None Remove="Data\DTOs\Editora\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Remove="Data\DTOs\Autor\**" />
-      <Content Remove="Data\DTOs\Editora\**" />
     </ItemGroup>
 
 </Project>
