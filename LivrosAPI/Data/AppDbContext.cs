@@ -11,10 +11,15 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        // TODO: AJUSTAR RELACIONAMENTO MUITOS PRA MUITOS / AUTORES - LIVROS
-        builder.Entity<Livro>()
-            .HasMany(livro => livro.Autores)
-            .WithMany(autor => autor.Livros);
+        builder.Entity<Trabalho>()
+            .HasOne(trabalho => trabalho.Autor)
+            .WithMany(autor => autor.Livros)
+            .HasForeignKey(trabalho => trabalho.AutorId);
+        
+        builder.Entity<Trabalho>()
+            .HasOne(trabalho => trabalho.Livro)
+            .WithMany(livro => livro.Autores)
+            .HasForeignKey(trabalho => trabalho.LivroId);
         
         builder.Entity<Livro>()
             .HasOne(livro => livro.Editora)
@@ -26,4 +31,5 @@ public class AppDbContext : DbContext
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Autor> Autores { get; set; }
     public DbSet<Editora> Editoras { get; set; }
+    public DbSet<Trabalho> Trabalhos { get; set; }
 }

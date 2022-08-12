@@ -18,5 +18,5 @@ public class Autor
     public string NomeCompleto { get; set; }
     
     [JsonIgnore]
-    public virtual List<Livro> Livros { get; set; }
+    public virtual List<Trabalho> Livros { get; set; }
 }

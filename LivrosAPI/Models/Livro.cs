@@ -45,7 +45,7 @@ public class Livro
     public int QuantidadeDisponivel { get; set; }
 
     [JsonIgnore]
-    public virtual List<Autor> Autores { get; set; }
+    public virtual List<Trabalho> Autores { get; set; }
 
     [JsonIgnore]
     public virtual Editora Editora { get; set; }
