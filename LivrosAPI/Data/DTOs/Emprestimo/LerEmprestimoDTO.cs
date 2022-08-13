@@ -11,5 +11,6 @@ public class LerEmprestimoDTO
     
     public LerLivroDTO Livro { get; set; }
     
+    [JsonIgnore]
     public LerUsuarioDTO Usuario { get; set; }
 }

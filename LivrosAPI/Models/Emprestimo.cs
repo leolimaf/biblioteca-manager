@@ -15,6 +15,7 @@ public class Emprestimo
 
     public virtual Livro Livro { get; set; }
     
+    [JsonIgnore]
     public virtual Usuario Usuario { get; set; }
     
     [Column("livro_id")]

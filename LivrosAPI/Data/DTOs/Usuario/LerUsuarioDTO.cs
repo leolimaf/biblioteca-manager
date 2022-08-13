@@ -1,4 +1,6 @@
-﻿namespace LivrosAPI.Data.DTOs.Usuario;
+﻿using LivrosAPI.Data.DTOs.Emprestimo;
+
+namespace LivrosAPI.Data.DTOs.Usuario;
 
 public class LerUsuarioDTO
 {
@@ -7,4 +9,5 @@ public class LerUsuarioDTO
     public string NomeCompleto { get; set; }
     public string Cpf { get; set; }
     public string Email { get; set; }
+    public virtual List<LerEmprestimoDTO> Emprestimos { get; set; }
 }
