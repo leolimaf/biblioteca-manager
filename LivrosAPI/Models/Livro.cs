@@ -18,7 +18,7 @@ public class Livro
     public string Titulo { get; set; }
     
     [Column("subtitulo")]
-    public string Subtitulo { get; set; }
+    public string? Subtitulo { get; set; }
     
     [JsonPropertyName("isbn-13")]
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
@@ -27,29 +27,33 @@ public class Livro
     public string Isbn { get; set; }
 
     [Column("serie")]
-    public string Serie { get; set; }
+    public string? Serie { get; set; }
     
     [Column("volume")]
-    public int Volume { get; set; }
+    public int? Volume { get; set; }
     
     [Column("ano_publicacao")]
-    public int AnoPublicacao { get; set; }
+    public int? AnoPublicacao { get; set; }
     
     [Column("idioma")]
-    public string Idioma { get; set; }
+    public string? Idioma { get; set; }
 
     [Column("numero_de_paginas")]
-    public int NumeroDePaginas { get; set; }
+    public int? NumeroDePaginas { get; set; }
 
-    [Column("quantidade_dispovivel")]
-    public int QuantidadeDisponivel { get; set; }
+    [Column("quantidade_disponivel")]
+    public int? QuantidadeDisponivel { get; set; }
 
-    [JsonIgnore]
-    public virtual List<Trabalho> Autores { get; set; }
+    public virtual Autor Autor { get; set; }
 
-    [JsonIgnore]
+    [Column("autor_id")]
+    public long AutorId { get; set; }
+
     public virtual Editora Editora { get; set; }
 
     [Column("editora_id")]
     public long EditoraId { get; set; }
+    
+    [JsonIgnore]
+    public virtual List<Emprestimo> Emprestimos { get; set; }
 }

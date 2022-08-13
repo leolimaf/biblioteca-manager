@@ -77,26 +77,33 @@ namespace LivrosAPI.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     titulo = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    subtitulo = table.Column<string>(type: "longtext", nullable: false)
+                    subtitulo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     isbn = table.Column<string>(type: "varchar(13)", maxLength: 13, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    serie = table.Column<string>(type: "longtext", nullable: false)
+                    serie = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    volume = table.Column<int>(type: "int", nullable: false),
-                    ano_publicacao = table.Column<int>(type: "int", nullable: false),
-                    idioma = table.Column<string>(type: "longtext", nullable: false)
+                    volume = table.Column<int>(type: "int", nullable: true),
+                    ano_publicacao = table.Column<int>(type: "int", nullable: true),
+                    idioma = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    numero_de_paginas = table.Column<int>(type: "int", nullable: false),
-                    quantidade_dispovivel = table.Column<int>(type: "int", nullable: false),
-                    EditoraId = table.Column<long>(type: "bigint", nullable: false)
+                    numero_de_paginas = table.Column<int>(type: "int", nullable: true),
+                    quantidade_disponivel = table.Column<int>(type: "int", nullable: true),
+                    autor_id = table.Column<long>(type: "bigint", nullable: false),
+                    editora_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_livro", x => x.id);
                     table.ForeignKey(
-                        name: "FK_livro_editora_EditoraId",
-                        column: x => x.EditoraId,
+                        name: "FK_livro_autor_autor_id",
+                        column: x => x.autor_id,
+                        principalTable: "autor",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_livro_editora_editora_id",
+                        column: x => x.editora_id,
                         principalTable: "editora",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -104,54 +111,66 @@ namespace LivrosAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AutorLivro",
+                name: "emprestimo",
                 columns: table => new
                 {
-                    AutoresId = table.Column<long>(type: "bigint", nullable: false),
-                    LivrosId = table.Column<long>(type: "bigint", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    livro_id = table.Column<long>(type: "bigint", nullable: false),
+                    usuario_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AutorLivro", x => new { x.AutoresId, x.LivrosId });
+                    table.PrimaryKey("PK_emprestimo", x => x.id);
                     table.ForeignKey(
-                        name: "FK_AutorLivro_autor_AutoresId",
-                        column: x => x.AutoresId,
-                        principalTable: "autor",
+                        name: "FK_emprestimo_livro_livro_id",
+                        column: x => x.livro_id,
+                        principalTable: "livro",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AutorLivro_livro_LivrosId",
-                        column: x => x.LivrosId,
-                        principalTable: "livro",
+                        name: "FK_emprestimo_usuario_usuario_id",
+                        column: x => x.usuario_id,
+                        principalTable: "usuario",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AutorLivro_LivrosId",
-                table: "AutorLivro",
-                column: "LivrosId");
+                name: "IX_emprestimo_livro_id",
+                table: "emprestimo",
+                column: "livro_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_livro_EditoraId",
+                name: "IX_emprestimo_usuario_id",
+                table: "emprestimo",
+                column: "usuario_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_livro_autor_id",
                 table: "livro",
-                column: "EditoraId");
+                column: "autor_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_livro_editora_id",
+                table: "livro",
+                column: "editora_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AutorLivro");
+                name: "emprestimo");
+
+            migrationBuilder.DropTable(
+                name: "livro");
 
             migrationBuilder.DropTable(
                 name: "usuario");
 
             migrationBuilder.DropTable(
                 name: "autor");
-
-            migrationBuilder.DropTable(
-                name: "livro");
 
             migrationBuilder.DropTable(
                 name: "editora");

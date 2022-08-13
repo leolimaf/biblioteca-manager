@@ -76,6 +76,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IAutorService, AutorService>();
 builder.Services.AddScoped<IEditoraService, EditoraService>();
+builder.Services.AddScoped<IEmprestimoService, EmprestimoService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts =>

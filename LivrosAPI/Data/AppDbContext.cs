@@ -11,15 +11,21 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<Trabalho>()
-            .HasOne(trabalho => trabalho.Autor)
-            .WithMany(autor => autor.Livros)
-            .HasForeignKey(trabalho => trabalho.AutorId);
         
-        builder.Entity<Trabalho>()
-            .HasOne(trabalho => trabalho.Livro)
-            .WithMany(livro => livro.Autores)
-            .HasForeignKey(trabalho => trabalho.LivroId);
+        builder.Entity<Emprestimo>()
+            .HasOne(emprestimo => emprestimo.Livro)
+            .WithMany(livro => livro.Emprestimos)
+            .HasForeignKey(emprestimo => emprestimo.LivroId);
+        
+        builder.Entity<Emprestimo>()
+            .HasOne(emprestimo => emprestimo.Usuario)
+            .WithMany(usuario => usuario.Emprestimos)
+            .HasForeignKey(emprestimo => emprestimo.UsuarioId);
+        
+        builder.Entity<Livro>()
+            .HasOne(livro => livro.Autor)
+            .WithMany(autor => autor.Livros)
+            .HasForeignKey(livro => livro.AutorId);        
         
         builder.Entity<Livro>()
             .HasOne(livro => livro.Editora)
@@ -31,5 +37,5 @@ public class AppDbContext : DbContext
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Autor> Autores { get; set; }
     public DbSet<Editora> Editoras { get; set; }
-    public DbSet<Trabalho> Trabalhos { get; set; }
+    public DbSet<Emprestimo> Emprestimos { get; set; }
 }

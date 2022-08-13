@@ -40,4 +40,7 @@ public class Usuario
     
     [Column("validade_token")]
     public DateTime? ValidadeToken { get; set; }
+    
+    [JsonIgnore]
+    public virtual List<Emprestimo> Emprestimos { get; set; }
 }

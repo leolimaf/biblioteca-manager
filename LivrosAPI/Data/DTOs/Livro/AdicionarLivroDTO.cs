@@ -28,5 +28,7 @@ public class AdicionarLivroDTO
     
     public int QuantidadeDisponivel { get; set; }
     
+    public long AutorId { get; set; }
+    
     public long EditoraId { get; set; }
 }

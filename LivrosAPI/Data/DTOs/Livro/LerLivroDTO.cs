@@ -34,7 +34,7 @@ public class LerLivroDTO
     
     public int QuantidadeDisponivel { get; set; }
     
-    public List<LerAutorDTO> Autores { get; set; }
+    public LerAutorDTO Autor { get; set; }
     
     public LerEditoraDTO Editora { get; set; }
 }

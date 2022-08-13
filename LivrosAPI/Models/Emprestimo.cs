@@ -4,8 +4,8 @@ using System.Text.Json.Serialization;
 
 namespace LivrosAPI.Models;
 
-[Table("trabalho")]
-public class Trabalho
+[Table("emprestimo")]
+public class Emprestimo
 {
     [Key]
     [Required]
@@ -13,15 +13,13 @@ public class Trabalho
     [Column("id")]
     public long Id { get; set; }
 
-    [JsonIgnore]
     public virtual Livro Livro { get; set; }
     
-    [JsonIgnore]
-    public virtual Autor Autor { get; set; }
+    public virtual Usuario Usuario { get; set; }
     
     [Column("livro_id")]
     public long LivroId { get; set; }
     
-    [Column("autor_id")]
-    public long AutorId { get; set; }
+    [Column("usuario_id")]
+    public long UsuarioId { get; set; }
 }
