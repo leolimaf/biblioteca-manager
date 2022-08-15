@@ -1,20 +1,18 @@
 ﻿using LivrosAPI.Data.DTOs.Emprestimo;
 using LivrosAPI.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LivrosAPI.Controllers;
 
 [ApiController]
-[Authorize("Bearer")]
 [ApiVersion("1.0")]
 [Route("v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
 public class EmprestimoController : ControllerBase
 {
-    private readonly IEmprestimoService _emprestimoService;
+    private readonly EmprestimoService _emprestimoService;
 
-    public EmprestimoController(IEmprestimoService emprestimoService)
+    public EmprestimoController(EmprestimoService emprestimoService)
     {
         _emprestimoService = emprestimoService;
     }

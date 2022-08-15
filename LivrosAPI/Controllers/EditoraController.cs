@@ -1,21 +1,19 @@
 ﻿using FluentResults;
 using LivrosAPI.Data.DTOs.Editora;
 using LivrosAPI.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LivrosAPI.Controllers;
 
 [ApiController]
-[Authorize("Bearer")]
 [ApiVersion("1.0")]
 [Route("v{version:apiVersion}/editora")]
 [Produces("application/json")]
 public class EditoraController : ControllerBase
 {
-    private readonly IEditoraService _editoraService;
+    private readonly EditoraService _editoraService;
 
-    public EditoraController(IEditoraService editoraService)
+    public EditoraController(EditoraService editoraService)
     {
         _editoraService = editoraService;
     }

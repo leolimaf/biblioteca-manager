@@ -1,6 +1,6 @@
 ﻿using LivrosAPI.Data.Requests;
 using LivrosAPI.Models;
-using LivrosAPI.Services.Implementations;
+using LivrosAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +12,9 @@ namespace LivrosAPI.Controllers;
 [Produces("application/json")]
 public class AutenticacaoController : ControllerBase
 {
-    private readonly IAutenticacaoService _autenticacaoService;
+    private readonly AutenticacaoService _autenticacaoService;
 
-    public AutenticacaoController(IAutenticacaoService autenticacaoService)
+    public AutenticacaoController(AutenticacaoService autenticacaoService)
     {
         _autenticacaoService = autenticacaoService;
     }

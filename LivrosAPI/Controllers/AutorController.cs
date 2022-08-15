@@ -1,21 +1,19 @@
 ﻿using FluentResults;
 using LivrosAPI.Data.DTOs.Autor;
 using LivrosAPI.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LivrosAPI.Controllers;
 
 [ApiController]
-[Authorize("Bearer")]
 [ApiVersion("1.0")]
 [Route("v{version:apiVersion}/autor")]
 [Produces("application/json")]
 public class AutorController : ControllerBase
 {
-    private readonly IAutorService _autorService;
+    private readonly AutorService _autorService;
 
-    public AutorController(IAutorService autorService)
+    public AutorController(AutorService autorService)
     {
         _autorService = autorService;
     }

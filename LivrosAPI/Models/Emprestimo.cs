@@ -14,10 +14,7 @@ public class Emprestimo
     public long Id { get; set; }
 
     public virtual Livro Livro { get; set; }
-    
-    [JsonIgnore]
-    public virtual Usuario Usuario { get; set; }
-    
+
     [Column("livro_id")]
     public long LivroId { get; set; }
     

@@ -3,9 +3,9 @@ using LivrosAPI.Data;
 using LivrosAPI.Data.DTOs.Emprestimo;
 using LivrosAPI.Models;
 
-namespace LivrosAPI.Services.Implementations;
+namespace LivrosAPI.Services;
 
-public class EmprestimoService : IEmprestimoService
+public class EmprestimoService
 {
     private AppDbContext _context;
     private IMapper _mapper;

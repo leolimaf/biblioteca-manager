@@ -4,9 +4,9 @@ using LivrosAPI.Data;
 using LivrosAPI.Data.DTOs.Editora;
 using LivrosAPI.Models;
 
-namespace LivrosAPI.Services.Implementations;
+namespace LivrosAPI.Services;
 
-public class EditoraService : IEditoraService
+public class EditoraService
 {
     private AppDbContext _context;
     private IMapper _mapper;

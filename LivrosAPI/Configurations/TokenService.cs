@@ -2,12 +2,11 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using LivrosAPI.Configurations;
 using Microsoft.IdentityModel.Tokens;
 
-namespace LivrosAPI.Services.Implementations;
+namespace LivrosAPI.Configurations;
 
-public class TokenService : ITokenService
+public class TokenService
 {
     private TokenConfiguration _configuration;
 

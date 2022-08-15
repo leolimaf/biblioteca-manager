@@ -4,9 +4,9 @@ using LivrosAPI.Data;
 using LivrosAPI.Data.DTOs.Autor;
 using LivrosAPI.Models;
 
-namespace LivrosAPI.Services.Implementations;
+namespace LivrosAPI.Services;
 
-public class AutorService : IAutorService
+public class AutorService
 {
     private AppDbContext _context;
     private IMapper _mapper;

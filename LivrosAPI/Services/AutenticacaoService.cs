@@ -8,17 +8,17 @@ using LivrosAPI.Data;
 using LivrosAPI.Data.Requests;
 using LivrosAPI.Models;
 
-namespace LivrosAPI.Services.Implementations;
+namespace LivrosAPI.Services;
 
-public class AutenticacaoService : IAutenticacaoService
+public class AutenticacaoService
 {
     private AppDbContext _context;
     private IMapper _mapper;
     private TokenConfiguration _configuration;
-    private ITokenService _tokenService;
+    private TokenService _tokenService;
     private const string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public AutenticacaoService(AppDbContext context, IMapper mapper, TokenConfiguration configuration, ITokenService tokenService)
+    public AutenticacaoService(AppDbContext context, IMapper mapper, TokenConfiguration configuration, TokenService tokenService)
     {
         _context = context;
         _mapper = mapper;

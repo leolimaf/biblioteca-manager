@@ -4,14 +4,14 @@ using LivrosAPI.Data;
 using LivrosAPI.Data.DTOs.Livro;
 using LivrosAPI.Models;
 
-namespace LivrosAPI.Services.Implementations;
+namespace LivrosAPI.Services;
 
-public class LivroService : ILivroService
+public class BibliotecaService
 {
     private AppDbContext _context;
     private IMapper _mapper;
 
-    public LivroService(AppDbContext context, IMapper mapper)
+    public BibliotecaService(AppDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
