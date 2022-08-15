@@ -13,7 +13,11 @@ builder.Services.AddDbContext<UserDbContext>(opts =>
 });
 builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>().AddEntityFrameworkStores<UserDbContext>();
 builder.Services.AddControllers();
-builder.Services.AddScoped<UsuarioService, UsuarioService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<CadastroService, CadastroService>();
+builder.Services.AddScoped<TokenService, TokenService>();
+builder.Services.AddScoped<LoginService, LoginService>();
+builder.Services.AddScoped<LogoutService, LogoutService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

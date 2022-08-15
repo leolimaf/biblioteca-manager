@@ -2,6 +2,7 @@
 using LivrosAPI.Data.DTOs.Usuario;
 using LivrosAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using UsuariosAPI.Data.Requests;
 
 namespace UsuariosAPI.Controllers;
 
@@ -10,14 +11,19 @@ namespace UsuariosAPI.Controllers;
 [Produces("application/json")]
 public class CadastroController : ControllerBase
 {
-    private readonly UsuarioService _usuarioService;
-    
+    private readonly CadastroService _cadastroService;
+
+    public CadastroController(CadastroService cadastroService)
+    {
+        _cadastroService = cadastroService;
+    }
+
     [HttpPost, Route("[action]")]
     public IActionResult CadastrarUsuario([FromBody] AdicionarUsuarioDTO usuarioDto)
     {
-        Result resultado = _usuarioService.CadastrarUsuario(usuarioDto);
+        Result resultado = _cadastroService.CadastrarUsuario(usuarioDto);
         if (resultado.IsFailed)
             return StatusCode(500);
-        return Ok();
+        return Ok(resultado.Successes);
     }
 }
