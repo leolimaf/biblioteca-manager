@@ -30,6 +30,7 @@
         </PackageReference>
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="6.1.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,23 +39,26 @@
       <Compile Remove="Services\IUsuarioServices.cs" />
       <Compile Remove="Data\Requests\TokenObj.cs" />
       <Compile Remove="Configurations\Services\**" />
+      <Compile Remove="Services\Implementations\**" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Migrations" />
-      <Folder Include="Services\Implementations" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Remove="Configurations\Services\**" />
+      <EmbeddedResource Remove="Services\Implementations\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Configurations\Services\**" />
+      <None Remove="Services\Implementations\**" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Remove="Configurations\Services\**" />
+      <Content Remove="Services\Implementations\**" />
     </ItemGroup>
 
 </Project>

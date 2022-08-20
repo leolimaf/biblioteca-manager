@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using BibliotecaWebApi.Configurations;using BibliotecaWebApi.Data;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,7 +74,6 @@ builder.Services.AddVersionedApiExplorer(opts =>
 builder.Services.AddScoped<BibliotecaService, BibliotecaService>();
 builder.Services.AddScoped<AutenticacaoService, AutenticacaoService>();
 builder.Services.AddScoped<TokenService, TokenService>();
-builder.Services.AddScoped<UsuarioService, UsuarioService>();
 builder.Services.AddScoped<AutorService, AutorService>();
 builder.Services.AddScoped<EditoraService, EditoraService>();
 builder.Services.AddScoped<EmprestimoService, EmprestimoService>();
@@ -80,6 +81,22 @@ builder.Services.AddScoped<EmprestimoService, EmprestimoService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts =>
 {
+    if (Debugger.IsAttached)
+    {
+        opts.AddServer(new OpenApiServer()
+        {
+            Description = "Local",
+            Url = "https://localhost:7075/"
+        });
+    }
+    else
+    {
+        opts.AddServer(new OpenApiServer()
+        {
+            Description = "Production",
+            Url = "https://bibliotecawebapi.com.br" // TODO: ALTERAR
+        });
+    }
     opts.SwaggerDoc("v1",new OpenApiInfo
     {
         Title = "Biblioteca Virtual - Web API",
@@ -91,6 +108,32 @@ builder.Services.AddSwaggerGen(opts =>
             Url = new Uri("https://github.com/leolimaf/BibliotecaWebApi")
         }
     });
+    opts.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = @"Cabeçalho de autorização padrão utilizando o Bearer Authentication Scheme.",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    opts.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+            },
+            new List<string>()
+        }
+    });
+    opts.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
     // using System.Reflection;
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));

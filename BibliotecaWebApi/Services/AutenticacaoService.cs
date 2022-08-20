@@ -5,6 +5,7 @@ using System.Text;
 using AutoMapper;
 using BibliotecaWebApi.Configurations;
 using BibliotecaWebApi.Data;
+using BibliotecaWebApi.Data.DTOs.Usuario;
 using BibliotecaWebApi.Data.Requests;
 using BibliotecaWebApi.Models;
 
@@ -25,6 +26,15 @@ public class AutenticacaoService
         _configuration = configuration;
         _tokenService = tokenService;
     }
+    
+    public LerUsuarioDTO RegistrarUsuario(AdicionarUsuarioDTO usuarioDto)
+    {
+        Usuario usuario = _mapper.Map<Usuario>(usuarioDto);
+        usuario.Senha = ComputeHash(usuario.Senha, new SHA256CryptoServiceProvider());
+        _context.Usuarios.Add(usuario);
+        _context.SaveChanges();
+        return _mapper.Map<LerUsuarioDTO>(usuario);
+    }
 
     public Token AutenticarUsuario(LoginRequest credenciais)
     {
@@ -33,10 +43,12 @@ public class AutenticacaoService
         
         if (usuario is null)
             return null;
+        string role = usuario.Matricula.ToUpper() == "ADMIN" ? "Admin" : "RegularUser"; // TODO: ALTERAR
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-            new Claim(JwtRegisteredClaimNames.UniqueName, usuario.Matricula)
+            new Claim(JwtRegisteredClaimNames.UniqueName, usuario.Matricula),
+            new Claim(ClaimTypes.Role, role),
         };
 
         var accessToken = _tokenService.GenerateAccessToken(claims);
@@ -109,6 +121,23 @@ public class AutenticacaoService
         _context.SaveChanges();
         
         return true;
+    }
+    
+    public List<LerUsuarioDTO> ListarUsuarios()
+    {
+        List<Usuario> usuarios = _context.Usuarios.ToList();
+        return _mapper.Map<List<LerUsuarioDTO>>(usuarios);
+    }
+
+    public LerUsuarioDTO ObterUsuarioPorId(long id)
+    {
+        Usuario usuario = _context.Usuarios.FirstOrDefault(usuario => usuario.Id == id);
+        if (usuario is not null)
+        {
+            LerUsuarioDTO usuarioDto = _mapper.Map<LerUsuarioDTO>(usuario);
+            return usuarioDto;
+        }
+        return null;
     }
 
     private string ComputeHash(string input, SHA256CryptoServiceProvider algorithm)

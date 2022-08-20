@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BibliotecaWebApi.Controllers;
 
 [ApiController]
-[Authorize("Bearer")]
+[Authorize(Policy = "Bearer", Roles = "Admin")]
 [ApiVersion("1.0")]
 [Route("v{version:apiVersion}/editora")]
 [Produces("application/json")]

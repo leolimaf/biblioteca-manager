@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BibliotecaWebApi.Controllers;
 
 [ApiController]
-[Authorize("Bearer")]
+[Authorize(Policy = "Bearer", Roles = "Admin")]
 [ApiVersion("1.0")]
 [Route("v{version:apiVersion}/autor")]
 [Produces("application/json")]
@@ -23,6 +23,7 @@ public class AutorController : ControllerBase
     [HttpPost, Route("adicionar-autor")]
     [ProducesResponseType(201, Type = typeof(LerAutorDTO))]
     [ProducesResponseType(400)]
+    [ProducesResponseType(403)]
     [ProducesResponseType(401)]
     public IActionResult AdicionarAutor([FromBody] AdicionarAutorDTO autorDto)
     {

@@ -1,4 +1,5 @@
-﻿using BibliotecaWebApi.Data.Requests;
+﻿using BibliotecaWebApi.Data.DTOs.Usuario;
+using BibliotecaWebApi.Data.Requests;
 using BibliotecaWebApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,13 @@ public class AutenticacaoController : ControllerBase
     {
         _autenticacaoService = autenticacaoService;
     }
+    
+    [HttpPost, Route("[action]")]
+    public IActionResult RegistrarUsuario([FromBody] AdicionarUsuarioDTO usuarioDto)
+    {
+        LerUsuarioDTO lerUsuarioDto = _autenticacaoService.RegistrarUsuario(usuarioDto);
+        return CreatedAtAction(nameof(ObterUsuarioPorId), new {Id = lerUsuarioDto.Id}, lerUsuarioDto);
+    }
 
     [HttpPost]
     [Route("[action]")]
@@ -34,6 +42,7 @@ public class AutenticacaoController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "Bearer")]
     [Route("[action]")]
     public IActionResult Refresh([FromBody] TokenValue tokenValue)
     {
@@ -60,5 +69,27 @@ public class AutenticacaoController : ControllerBase
             return BadRequest("Invalid client request");
         
         return NoContent();
+    }
+
+    [HttpGet]
+    [Authorize(Policy = "Bearer", Roles = "Admin")]
+    [Route("[action]")]
+    public IActionResult ObterUsuarioPorId(long id)
+    {
+        LerUsuarioDTO lerUsuarioDto =  _autenticacaoService.ObterUsuarioPorId(id);
+        if (lerUsuarioDto is null) 
+            return NotFound(lerUsuarioDto);
+        return Ok(lerUsuarioDto);
+    }
+    
+    [HttpGet]
+    [Authorize(Policy = "Bearer", Roles = "Admin")]
+    [Route("[action]")]
+    public IActionResult ListarUsuarios()
+    {
+        List<LerUsuarioDTO> readUsuariosDto = _autenticacaoService.ListarUsuarios();
+        if (readUsuariosDto is null) 
+            return NotFound();
+        return Ok(readUsuariosDto);
     }
 }

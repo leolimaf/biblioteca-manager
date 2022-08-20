@@ -1,5 +1,4 @@
 ﻿using BibliotecaWebApi.Data.DTOs.Livro;
-using BibliotecaWebApi.Data.DTOs.Usuario;
 using BibliotecaWebApi.Services;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
@@ -34,10 +33,11 @@ public class BibliotecaController : ControllerBase
     /// <response code="201">Retorna o livro que foi adicionado (schema LerLivroDTO).</response>
     /// <response code="400">Se o payload informado não estiver conforme a especificação.</response>
     /// <response code="401">Caso o cliente não possua um token válido para realizar a requisição.</response>
-    [HttpPost, Route("adicionar-livro")]
+    [HttpPost, Route("adicionar-livro"), Authorize(Roles = "Admin")]
     [ProducesResponseType(201, Type = typeof(LerLivroDTO))]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult AdicionarLivro([FromBody] AdicionarLivroDTO livroDto)
     {
         LerLivroDTO lerLivroDto = _bibliotecaService.AdicionarLivro(livroDto);
@@ -96,10 +96,11 @@ public class BibliotecaController : ControllerBase
         return Ok(lerLivroDto);
     }
     
-    [HttpPut, Route("atualizar-livro-por-id")]
+    [HttpPut, Route("atualizar-livro-por-id"), Authorize(Roles = "Admin")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult AtualizarLivroPorId(long id, AtualizarLivroDTO livroDto)
     {
         Result result = _bibliotecaService.AtualizarLivroPorId(id, livroDto);
@@ -108,10 +109,11 @@ public class BibliotecaController : ControllerBase
         return NoContent();
     }
     
-    [HttpPut, Route("atualizar-livro-por-isbn-13")]
+    [HttpPut, Route("atualizar-livro-por-isbn-13"), Authorize(Roles = "Admin")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult AtualizarLivroPorIsbn13(string isbn13, AtualizarLivroDTO livroDto)
     {
         Result result = _bibliotecaService.AtualizarLivroPorIsbn13(isbn13, livroDto);
@@ -120,10 +122,11 @@ public class BibliotecaController : ControllerBase
         return NoContent();
     }
     
-    [HttpDelete, Route("remover-livro-por-id")]
+    [HttpDelete, Route("remover-livro-por-id"), Authorize(Roles = "Admin")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult RemoverLivroPorId(long id)
     {
         Result result = _bibliotecaService.RemoverLivroPorId(id);
@@ -132,10 +135,11 @@ public class BibliotecaController : ControllerBase
         return NoContent();
     }
     
-    [HttpDelete, Route("remover-livro-por-isbn-13")]
+    [HttpDelete, Route("remover-livro-por-isbn-13"), Authorize(Roles = "Admin")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult RemoverLivroPorIsbn13(string isbn)
     {
         Result result = _bibliotecaService.RemoverLivroPorIsbn13(isbn);
