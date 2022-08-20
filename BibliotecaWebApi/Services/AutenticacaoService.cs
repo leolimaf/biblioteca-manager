@@ -81,7 +81,7 @@ public class AutenticacaoService
         var refreshToken = tokenValue.RefreshToken;
 
         var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
-        var matricula = principal.Identity.Name;
+        var matricula = principal.Identity?.Name;
         var usuario = _context.Usuarios.FirstOrDefault(u => u.Matricula == matricula);
 
         if (usuario is null || usuario.Token != refreshToken || usuario.ValidadeToken <= DateTime.Now)

@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -99,7 +98,7 @@ builder.Services.AddSwaggerGen(opts =>
     }
     opts.SwaggerDoc("v1",new OpenApiInfo
     {
-        Title = "Biblioteca Virtual - Web API",
+        Title = "Biblioteca - Web API",
         Version = "v1",
         Description = "API REST desenvolvida para realizar o gerenciamento de bibliotecas.",
         Contact = new OpenApiContact
@@ -145,7 +144,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(opts => opts.DocumentTitle = "Biblioteca Virtual - Web API");
+    app.UseSwaggerUI(opts => opts.DocumentTitle = "Biblioteca - Web API");
 }
 
 app.UseHttpsRedirection();
@@ -160,7 +159,7 @@ app.UseSwagger();
 
 app.UseSwaggerUI(opts =>
 {
-    opts.SwaggerEndpoint("/swagger/v1/swagger.json", "Biblioteca Virtual - Web API");
+    opts.SwaggerEndpoint("/swagger/v1/swagger.json", "Biblioteca - Web API");
 });
 
 var option = new RewriteOptions();
