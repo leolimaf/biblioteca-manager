@@ -88,7 +88,7 @@ public class BibliotecaController : ControllerBase
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
     [ProducesResponseType(404)]
-    public IActionResult ObterLivroPorTitulo([FromQuery] string titulo, [FromQuery] string subTitulo)
+    public IActionResult ObterLivroPorTitulo([FromQuery] string titulo, [FromQuery] string? subTitulo)
     {
         List<LerLivroDTO> lerLivroDto =  _bibliotecaService.ObterLivroPorTitulo(titulo, subTitulo);
         if (lerLivroDto is null) 

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using AspNetCoreRateLimit;
 using BibliotecaWebApi.Configurations;using BibliotecaWebApi.Data;
 using BibliotecaWebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -59,6 +60,10 @@ builder.Services.AddMvc(opts =>
     opts.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
     opts.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
 }).AddXmlSerializerFormatters();
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddSingleton<IRateLimitConfiguration, CustomRateLimitConfiguration >();
+builder.Services.AddInMemoryRateLimiting();
 builder.Services.AddApiVersioning(opts =>
 {
     opts.DefaultApiVersion = new ApiVersion(1, 0);
@@ -152,6 +157,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+app.UseIpRateLimiting();
 
 app.UseApiVersioning();
 
