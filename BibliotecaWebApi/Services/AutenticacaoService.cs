@@ -43,12 +43,11 @@ public class AutenticacaoService
         
         if (usuario is null)
             return null;
-        string role = usuario.Matricula.ToUpper() == "ADMIN" ? "Admin" : "RegularUser"; // TODO: ALTERAR
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
             new Claim(JwtRegisteredClaimNames.UniqueName, usuario.Matricula),
-            new Claim(ClaimTypes.Role, role),
+            new Claim(ClaimTypes.Role, "RegularUser"),
         };
 
         var accessToken = _tokenService.GenerateAccessToken(claims);

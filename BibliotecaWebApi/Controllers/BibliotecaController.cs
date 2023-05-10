@@ -33,7 +33,7 @@ public class BibliotecaController : ControllerBase
     /// <response code="201">Retorna o livro que foi adicionado (schema LerLivroDTO).</response>
     /// <response code="400">Se o payload informado não estiver conforme a especificação.</response>
     /// <response code="401">Caso o cliente não possua um token válido para realizar a requisição.</response>
-    [HttpPost, Route("adicionar-livro"), Authorize(Roles = "Admin")]
+    [HttpPost, Route("adicionar-livro")]
     [ProducesResponseType(201, Type = typeof(LerLivroDTO))]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -96,7 +96,7 @@ public class BibliotecaController : ControllerBase
         return Ok(lerLivroDto);
     }
     
-    [HttpPut, Route("atualizar-livro-por-id"), Authorize(Roles = "Admin")]
+    [HttpPut, Route("atualizar-livro-por-id")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -109,7 +109,7 @@ public class BibliotecaController : ControllerBase
         return NoContent();
     }
     
-    [HttpPut, Route("atualizar-livro-por-isbn-13"), Authorize(Roles = "Admin")]
+    [HttpPut, Route("atualizar-livro-por-isbn-13")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -122,7 +122,7 @@ public class BibliotecaController : ControllerBase
         return NoContent();
     }
     
-    [HttpDelete, Route("remover-livro-por-id"), Authorize(Roles = "Admin")]
+    [HttpDelete, Route("remover-livro-por-id")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -135,7 +135,7 @@ public class BibliotecaController : ControllerBase
         return NoContent();
     }
     
-    [HttpDelete, Route("remover-livro-por-isbn-13"), Authorize(Roles = "Admin")]
+    [HttpDelete, Route("remover-livro-por-isbn-13")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
