@@ -46,12 +46,10 @@ public class BibliotecaService
         List<Livro> livros;
         if (!string.IsNullOrWhiteSpace(titulo) && !string.IsNullOrWhiteSpace(subtitulo))
             livros = _context.Livros
-                .Where(l => l.Titulo.Contains(titulo) && l.Subtitulo.Contains(subtitulo))
+                .Where(l => l.Titulo.Contains(titulo))
                 .ToList();
         else if (!string.IsNullOrWhiteSpace(titulo) && string.IsNullOrWhiteSpace(subtitulo))
             livros = _context.Livros.Where(l => l.Titulo.Contains(titulo)).ToList();
-        else if (string.IsNullOrWhiteSpace(titulo) && !string.IsNullOrWhiteSpace(subtitulo))
-            livros = _context.Livros.Where(l => l.Subtitulo.Contains(subtitulo)).ToList();
         else
             livros = null;
         

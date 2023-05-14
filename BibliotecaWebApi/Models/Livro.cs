@@ -16,10 +16,7 @@ public class Livro
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     [Column("titulo")]
     public string Titulo { get; set; }
-    
-    [Column("subtitulo")]
-    public string? Subtitulo { get; set; }
-    
+
     [JsonPropertyName("isbn-13")]
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     [StringLength(13, MinimumLength = 13, ErrorMessage = "O campo {0} só pode ter {2} caracteres.")]
@@ -34,9 +31,6 @@ public class Livro
     
     [Column("ano_publicacao")]
     public int? AnoPublicacao { get; set; }
-    
-    [Column("idioma")]
-    public string? Idioma { get; set; }
 
     [Column("numero_de_paginas")]
     public int? NumeroDePaginas { get; set; }
