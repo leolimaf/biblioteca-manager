@@ -38,13 +38,27 @@ export default function Livro(){
         }
     }
 
+    async function deslogar(){
+        try {
+            await api.get('v1/autenticacao/deslogar', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            localStorage.clear();
+            navigate("/");
+        } catch (error) {
+            alert('Falha ao deslogar, tente novamente.')
+        }
+    }
+
     return(
         <div className="book-container">
             <header>
                 <img src={logoImage} alt="Erudio"/>
                 <span>Bem vindo, <strong>{matricula.toLowerCase()}</strong>!</span>
                 <Link className="button" to="adicionar-livro">Adicionar Livro</Link>
-                <button type="button">
+                <button type="button" onClick={deslogar}>
                     <FiPower size={18} color="#251fc5" />
                 </button>
             </header>
