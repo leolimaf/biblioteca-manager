@@ -6,11 +6,6 @@ namespace BibliotecaWebApi.Data.DTOs.Livro;
 
 public class AtualizarLivroDTO
 {
-    [Key]
-    [Required]
-    [JsonPropertyName("id")]
-    public long Id { get; set; }
-    
     [Required(ErrorMessage = "O campo {0} é obrigatório.")]
     public string Titulo { get; set; }
     

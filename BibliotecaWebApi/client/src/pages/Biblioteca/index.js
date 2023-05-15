@@ -38,6 +38,14 @@ export default function Livro(){
         }
     }
 
+    async function editarlivro(id){
+        try {
+           navigate(`atualizar-livro/${id}`)
+        } catch (error) {
+            alert('Falha ao excluir livro, tente novamente.')
+        }
+    }
+
     async function deslogar(){
         try {
             await api.get('v1/autenticacao/deslogar', {
@@ -57,7 +65,7 @@ export default function Livro(){
             <header>
                 <img src={logoImage} alt="Erudio"/>
                 <span>Bem vindo, <strong>{matricula.toLowerCase()}</strong>!</span>
-                <Link className="button" to="adicionar-livro">Adicionar Livro</Link>
+                <Link className="button" to="adicionar-livro/">Adicionar Livro</Link>
                 <button type="button" onClick={deslogar}>
                     <FiPower size={18} color="#251fc5" />
                 </button>
@@ -80,7 +88,7 @@ export default function Livro(){
                         <strong>Volume</strong>
                         <p>{livro.volume}</p>
 
-                        <button type="button">
+                        <button type="button" onClick={() => editarlivro(livro.id)}>
                             <FiEdit size={20} color="#251fc5"/>
                         </button>
                         <button type="button" onClick={() => deletarLivro(livro.id)}>
