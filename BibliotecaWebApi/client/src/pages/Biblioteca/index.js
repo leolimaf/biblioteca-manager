@@ -25,6 +25,19 @@ export default function Livro(){
         })
     }, [accessToken])
 
+    async function deletarLivro(id){
+        try {
+            await api.delete(`v1/biblioteca/remover-livro-por-id?id=${id}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            setLivros(livros.filter(livro => livro.id !== id));
+        } catch (error) {
+            alert('Falha ao excluir livro, tente novamente.')
+        }
+    }
+
     return(
         <div className="book-container">
             <header>
@@ -56,7 +69,7 @@ export default function Livro(){
                         <button type="button">
                             <FiEdit size={20} color="#251fc5"/>
                         </button>
-                        <button type="button">
+                        <button type="button" onClick={() => deletarLivro(livro.id)}>
                             <FiTrash2 size={20} color="#251fc5"/>
                         </button>
                     </li>

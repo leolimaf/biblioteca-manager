@@ -42,7 +42,7 @@ export default function NovoLivro(){
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
-            })
+            });
             navigate("/biblioteca");
         } catch (error) {
             alert('Não foi possível adicionar o livro, tente novamente.')
